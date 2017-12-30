@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>FILKOM Apps | Dosen</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="themes/dosen-filkomapps.min.css" />
+  <link rel="stylesheet" href="themes/jquery.mobile.icons.min.css" />
+  <link rel="stylesheet" href="addon/jquery.mobile.structure-1.4.5.min.css" />
+  <script src="addon/jquery-1.11.1.min.js"></script>
+  <script src="addon/jquery.mobile-1.4.5.min.js"></script>
+  <link rel="stylesheet" href="addon/font-awesome.css">
+  <link rel="stylesheet" href="addon/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <style type="text/css">
+   .ukuran1 {
+   font-size: 12px;
+   }
+</style>
+</head>
+
+<body>
+
+  <!-- Halaman 1 -->
+  <div data-role="page" id="home">
+    <div data-role="header" data-position="fixed">
+      <a href="#" class="ui-btn ui-icon-home ui-btn-icon-notext ui-corner-all">No text</a>
+      <h1>FILKOM APPS</h1>
+    </div>
+
+    <div role="main" class="ui-content" align="center">
+      <h2>DAFTAR HADIR CIVITAS</h2>
+      <hr>
+      <img src="fotohome.png" width="100%">
+      <hr>
+      <a href="#dosen" class="ui-btn">Dosen</a>
+      <a href="#staff" class="ui-btn">Staff</a>
+      <hr>
+      <h4>Dibuat Oleh Sector-7 Team</h4>
+      <p class="ukuran1">Moh. Wahyu Dwi Ridiansyah - 155150200111232</p>
+      <p class="ukuran1">Sukron Alfa Dani Setiawan - 155150201111305</p>
+      <p class="ukuran1">Firstian Satya Yulihardi - 155150200111230</p>
+      <p class="ukuran1">Rizky Jelang Romadhondaru - 155150200111223</p>
+      <p class="ukuran1">Rozi Dio Prasetyo - 155150201111304</p>
+    </div>
+
+    <div data-role="footer" data-position="fixed">
+      <h6><smal>Made with <span class="fa fa-code"></span> and <span class="fa fa-heart"></span> By Sector-7 Team</small></h6>
+    </div>
+
+  </div>
+  <!-- Akhir halaman 1 -->
+
+  <!-- Halaman 2 -->
+  <div data-role="page" id="dosen">
+    <div data-role="header" data-position="fixed">
+      <a href="#home" class="ui-btn ui-icon-home ui-btn-icon-notext ui-corner-all"></a>
+      <h1>Dosen</h1>
+      <a href="#staff" class="ui-btn ui-icon-user ui-btn-icon-notext ui-corner-all">Staff</a>
+    </div>
+
+    <div role="main" class="ui-content">
+      <ul data-role="listview" data-filter="true" data-filter-placeholder="Cari Dosen..." data-inset="true" id="dsn">
+        <script>
+          $(document).ready(function() {
+            $.ajax({
+              type: "GET",
+              url: "http://filkom.ub.ac.id/module/api/conf/get_civitas/dosen/",
+              success: function(data) {
+                var result = atob(data);
+                var json = JSON.stringify(eval("(" + result + ")"));
+                var jsonb = JSON.parse(result);
+                var string, str = "";
+                for (var i = 0; i < jsonb.length; i++) {
+                  string = string + "\n " + i + jsonb[i].id + " " + jsonb[i].nama;
+                  var hdr;
+                  if (jsonb[i].hadir != null) {
+                    hdr = "[Hadir]";
+                  } else {
+                    hdr = "[Tidak Hadir]";
+                  }
+                  var jbtn = "";
+                  if (jsonb[i].jabatan != null) {
+                    var temp = jsonb[i].jabatan.split("-");
+                    jbtn = temp[0];
+                  } else {
+                    jbtn = "Dosen";
+                  }
+                  var untKrj = "";
+                  var unitKerja = "";
+                  if (jsonb[i].unitkerja != null) {
+                    var untKrj = jsonb[i].unitkerja.split("@");
+                    for (var j = 0; j < untKrj.length; j++) {
+                      var temp = untKrj[j].split("-");
+                      untKrj[j] = temp[0];
+                      unitKerja += untKrj[j] + ", ";
+                    }
+                  } else {
+                    unitKerja = "";
+                  }
+                  var src = "";
+                  if (jsonb[i].foto != null) {
+                    src = "http://file.filkom.ub.ac.id/fileupload/assets/" + jsonb[i].foto;
+                  } else {
+                    src = "fotopengganti.png";
+                  }
+                  str += "<li><a class=\"ui-btn\"><img src=\"" + src + "\" width=\"100%\" height=\"100%\">" + jsonb[i].nama + ", " + jsonb[i].gelar_akhir + " <small><p>R. " + jsonb[i].ruangkerja + "</small> - " + jbtn +
+                    "</p><p style=\"font-weight: bold; color:green;\">" + hdr + "</p></a></li>";
+                  $('#dsn').html(str);
+                }
+              }
+            });
+          });
+        </script>
+      </ul>
+    </div>
+
+    <div data-role="footer" data-position="fixed">
+      <h6><smal>Made with <span class="fa fa-code"></span> and <span class="fa fa-heart"></span> By Sector-7 Team</small></h6>
+    </div>
+
+  </div>
+  <!-- Akhir halaman 2 -->
+
+  <!-- halaman 3 -->
+  <div data-role="page" id="staff">
+    <div data-role="header" data-position="fixed">
+      <a href="#home" class="ui-btn ui-icon-home ui-btn-icon-notext ui-corner-all">No text</a>
+      <h1>Staff</h1>
+      <a href="#dosen" class="ui-btn ui-icon-user ui-btn-icon-notext ui-corner-all">Dosen</a>
+    </div>
+
+
+    <div role="main" class="ui-content">
+      <ul data-role="listview" data-filter="true" data-filter-placeholder="Cari Staff..." data-inset="true" id="staf">
+        <script>
+          $(document).ready(function() {
+            $.ajax({
+              type: "GET",
+              url: "http://filkom.ub.ac.id/module/api/conf/get_civitas/staff/",
+              success: function(data) {
+                var result = atob(data);
+                var json = JSON.stringify(eval("(" + result + ")"));
+                var jsonb = JSON.parse(result);
+                var string, str = "";
+                for (var i = 0; i < jsonb.length; i++) {
+                  string = string + "\n " + i + jsonb[i].id + " " + jsonb[i].nama;
+                  var hdr;
+                  if (jsonb[i].hadir != null) {
+                    hdr = "[Hadir]";
+                  } else {
+                    hdr = "[Tidak Hadir]";
+                  }
+                  var jbtn = "";
+                  if (jsonb[i].jabatan != null) {
+                    var temp = jsonb[i].jabatan.split("-");
+                    jbtn = temp[0];
+                  } else {
+                    jbtn = "Staff";
+                  }
+                  var untKrj = "";
+                  var unitKerja = "";
+                  if (jsonb[i].unitkerja != null) {
+                    var untKrj = jsonb[i].unitkerja.split("@");
+                    for (var j = 0; j < untKrj.length; j++) {
+                      var temp = untKrj[j].split("-");
+                      untKrj[j] = temp[0];
+                      unitKerja += untKrj[j] + ", ";
+                    }
+                  } else {
+                    unitKerja = "";
+                  }
+                  var src = "";
+                  if (jsonb[i].foto != null) {
+                    src = "http://file.filkom.ub.ac.id/fileupload/assets/" + jsonb[i].foto;
+                  } else {
+                    src = "fotopengganti.png";
+                  }
+                  str += "<li><a class=\"ui-btn\"><img src=\"" + src + "\" width=\"100%\" height=\"100%\">" + jsonb[i].nama + ", " + jsonb[i].gelar_akhir + " <small><p>R. " + jsonb[i].ruangkerja + "</small> - " + jbtn +
+                    "</p><p style=\"font-weight: bold; color:green;\">" + hdr + "</p></a></li>";
+                  $('#staf').html(str);
+                }
+              }
+            });
+          });
+        </script>
+      </ul>
+    </div>
+
+    <div data-role="footer" data-position="fixed">
+      <h6><smal>Made with <span class="fa fa-code"></span> and <span class="fa fa-heart"></span> By Sector-7 Team</small></h6>
+    </div>
+
+  </div>
+  <!-- Akhir halaman 3 -->
+
+
+</body>
+
+</html>
